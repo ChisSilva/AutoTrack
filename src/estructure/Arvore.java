@@ -8,5 +8,5 @@ public interface Arvore<K extends Comparable<K>, V> {
     V buscar(K chave);
     void remover(K chave);
 
-    List<V> travessiaEmOrdem();
+    List<V> emOrdem();
 }
