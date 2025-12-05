@@ -1,6 +1,5 @@
 package domain;
 
-import javax.naming.NamingException;
 import util.InfoAutor;
 import util.NegocioException;
 

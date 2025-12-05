@@ -132,85 +132,77 @@ public class AVL<K extends Comparable<K>, V> implements Arvore<K, V> {
         } else {
             return no;
         }
+    }
 
-        @Override
-        public List<V> emOrdem() {
-            List<V> lista = new ArrayList<>();
-            emOrdemRecursivo(this.raiz, lista);
-            return lista;
+    @Override
+    public List<V> travessiaEmOrdem() {
+        List<V> lista = new ArrayList<>();
+        emOrdemRecursivo(this.raiz, lista);
+        return lista;
+    }
+
+    private void emOrdemRecursivo(No<K, V> no, List<V> lista) {
+        if (no != null) {
+            emOrdemRecursivo(no.esquerda, lista);
+            lista.add(no.valor);
+            emOrdemRecursivo(no.direita, lista);
+        }
+    }
+
+    private No<K, V> minValorNo(No<K, V> no) {
+        No<K, V> atual = no;
+        while (atual.esquerda != null) {
+            atual = atual.esquerda;
+        }
+        return atual;
+    }
+
+    @Override
+    public void remover(K chave) {
+        this.raiz = removerRecursivo(this.raiz, chave);
+    }
+
+    private No<K, V> removerRecursivo(No<K, V> no, K chave) {
+        if (no == null) {
+            return no;
         }
 
-        private void emOrdemRecursivo(No<K, V> no, List<V> lista) {
-            if (no != null) {
-                emOrdemRecursivo(no.esquerda, lista);
-                lista.add(no.valor);
-                emOrdemRecursivo(no.direita, lista);
-            }
-        }
+        int comparacao = chave.compareTo(no.chave);
 
-        private No<K, V> minValorNo(No<K, V> no) {
-            No<K, V> atual = no;
-            while (atual.esquerda != null) {
-                atual = atual.esquerda;
-            }
-            return atual;
-        }
+        if (comparacao < 0) {
+            no.esquerda = removerRecursivo(no.esquerda, chave);
+        } else if (comparacao > 0) {
+            no.direita = removerRecursivo(no.direita, chave);
+        } else {
+            // Nó com apenas um filho ou nenhum filho
+            if ((no.esquerda == null) || (no.direita == null)) {
+                No<K, V> temp = (no.esquerda != null) ? no.esquerda : no.direita;
 
-        @Override
-        public V remover(K chave) {
-            if (raiz == null) {
-                return null;
-            }
-
-            V valorRemovido = buscar(chave);
-            if (valorRemovido != null) {
-                this.raiz = removerRecursivo(this.raiz, chave);
-            }
-
-            return valorRemovido;
-        }
-
-        private No<K, V> removerRecursivo(No<K, V> no, K chave) {
-            if (no == null) {
-                return no;
-            }
-
-            int comparacao = chave.compareTo(no.chave);
-
-            if (comparacao < 0) {
-                no.esquerda = removerRecursivo(no.esquerda, chave);
-            } else if (comparacao > 0) {
-                no.direita = removerRecursivo(no.direita, chave);
-            } else {
-                // Nó com apenas um filho ou nenhum filho
-                if ((no.esquerda == null) || (no.direita == null)) {
-                    No<K, V> temp = (no.esquerda != null) ? no.esquerda : no.direita;
-
-                    // Sem filhos
-                    if (temp == null) {
-                        no = null;
-                    } else { 
-                        // Um filho
-                        no = temp;
-                    }
+                // Sem filhos
+                if (temp == null) {
+                    no = null;
                 } else {
-                    // Nó com dois filhos: obter o sucessor inorder (menor na subárvore direita)
-                    No<K, V> temp = minValorNo(no.direita);
-
-                    // Copiar o valor do sucessor emordem para este nó
-                    no.chave = temp.chave;
-                    no.valor = temp.valor;
-
-                    // Remover o sucessor emordem
-                    no.direita = removerRecursivo(no.direita, temp.chave);
+                    // Um filho
+                    no = temp;
                 }
-            }
+            } else {
+                // Nó com dois filhos: obter o sucessor inorder (menor na subárvore direita)
+                No<K, V> temp = minValorNo(no.direita);
 
-            // Se o nó só tinha um filho ou nenhum filho
-            if (no == null) {
-                return no;
-            }
+                // Copiar o valor do sucessor emordem para este nó
+                no.chave = temp.chave;
+                no.valor = temp.valor;
 
-            return balancear(no);
+                // Remover o sucessor emordem
+                no.direita = removerRecursivo(no.direita, temp.chave);
+            }
         }
+
+        // Se o nó foi removido (era folha)
+        if (no == null) {
+            return no;
+        }
+
+        return balancear(no);
+    }
 }

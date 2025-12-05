@@ -1,0 +1,55 @@
+# -------------------------------------------------------------------
+# ARQUIVOS GERADOS (BUILD ARTIFACTS)
+# -------------------------------------------------------------------
+
+# 1. Pasta de saída da compilação (bin)
+# Contém todos os arquivos .class gerados pelo 'javac -d bin'
+bin/
+
+# 2. Arquivos de classe compilados (mesmo se não estiverem em 'bin')
+*.class
+
+# 3. Arquivos de empacotamento (JARs/WARs, se você usasse um build tool)
+*.jar
+*.war
+*.ear
+
+# -------------------------------------------------------------------
+# ARQUIVOS DE IDE (VS CODE, ECLIPSE, INTELLIJ)
+# -------------------------------------------------------------------
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+.project
+bin/ 
+# O Eclipse usa a pasta 'bin/' para classes compiladas, já ignorada acima.
+
+# VS Code
+.vscode/
+
+# -------------------------------------------------------------------
+# ARQUIVOS DE SISTEMA OPERACIONAL
+# -------------------------------------------------------------------
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# -------------------------------------------------------------------
+# ARQUIVOS DE LOG E TEMPORÁRIOS
+# -------------------------------------------------------------------
+
+# Arquivos de log e temporários genéricos
+*.log
+*.tmp
+*~

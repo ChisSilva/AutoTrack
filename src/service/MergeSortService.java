@@ -48,5 +48,5 @@ public class MergeSortService<T> implements Ordenacao<T> {
             lista.set(k++, direita.get(j++));
         }
 
-    
+    }
 }

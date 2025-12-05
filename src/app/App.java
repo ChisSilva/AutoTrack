@@ -5,10 +5,11 @@ import repository.*;
 import service.*;
 import util.InfoAutor;
 import util.NegocioException;
-
+import estructure.*;
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
+
 
 public class App {
 
@@ -71,8 +72,8 @@ public class App {
         
         // --- ADICIONAR (Sucesso) ---
         try {
-            Veiculo carro1 = new Carro("ABC-1234", "Civic", 2020, 50000, 4);
-            Veiculo moto1 = new Moto("XYZ-9876", "Ninja", 2023, 1000, 600);
+            Veiculo carro1 = new Carro("ABC-1234", "Honda", "Civic", 2020, 50000.0, 4);
+            Veiculo moto1 = new Moto("XYZ-9876", "Kawasaki","Ninja", 2023, 1000.0, 600);
             
             // Adiciona ao Repositório e à Árvore
             repositorioVeiculos.adicionar(carro1);
@@ -91,7 +92,7 @@ public class App {
         System.out.println("\n  -> Teste de Exceção de Negócio:");
         try {
             // Tentativa de adicionar veículo com ano inválido (Regra: Ano >= 1960)
-            Veiculo carroInvalido = new Carro("DEF-5678", "Fusca", 1959, 1000, 2); 
+            Veiculo carroInvalido = new Carro("DEF-5678", "Volkswagen", "Fusca", 1959, 1000.0, 2); 
             repositorioVeiculos.adicionar(carroInvalido);
             
         } catch (NegocioException e) {
@@ -109,7 +110,7 @@ public class App {
 
         // --- LISTAR TODOS (Polimorfismo Ativo) ---
         System.out.println("\n  -> Listagem Completa (Polimorfismo Ativo):");
-        List<Veiculo> listaAtual = repositorioVeiculos.listarTodos();
+        List<Veiculo> listaAtual = repositorioVeiculos.listar();
         listaAtual.forEach(v -> System.out.println("    " + v)); // Cada subclasse imprime seus Detalhes Adicionais
 
         // --- REMOVER ---
@@ -119,7 +120,7 @@ public class App {
         
         // --- VERIFICAÇÃO PÓS REMOÇÃO ---
         System.out.println("\n  -> Listagem após remoção:");
-        repositorioVeiculos.listarTodos().forEach(v -> System.out.println("    " + v));
+        repositorioVeiculos.listar().forEach(v -> System.out.println("    " + v));
     }
 
     // -----------------------------------------------------------------
@@ -132,7 +133,7 @@ public class App {
         
         // Adiciona mais um item para ver o balanceamento
         try {
-            Veiculo carro2 = new Carro("MMM-0000", "Van", 2022, 12000, 5);
+            Veiculo carro2 = new Carro("MMM-0000", "Fiat","Fiorino", 2022, 12000.0, 5);
             repositorioVeiculos.adicionar(carro2);
             arvoreVeiculos.inserir(carro2.getPlaca(), carro2);
         } catch (NegocioException e) {
@@ -154,13 +155,13 @@ public class App {
         System.out.println("4. DEMONSTRAÇÃO DE ORDENAÇÃO (MergeSort com Comparator)");
         
         // Pega a lista atual do Repositório
-        List<Veiculo> listaParaOrdenar = repositorioVeiculos.listarTodos();
+        List<Veiculo> listaParaOrdenar = repositorioVeiculos.listar();
         
         // --- ORDENAÇÃO POR ANO (Usando VeiculoAnoComparator) ---
         System.out.println("\n  -> Ordenando por ANO (Mais Antigo para Mais Novo):");
         
         // 1. Instancia o Comparator
-        Comparator<Veiculo> compAno = new VeiculoAnoComparator(); 
+        Comparator<Veiculo> compAno = new VeiculoAnoComparador(); 
         
         // 2. Aplica o MergeSort
         long startTime = System.currentTimeMillis();
@@ -177,7 +178,7 @@ public class App {
         System.out.println("\n  -> Ordenando por QUILOMETRAGEM (Menor para Maior):");
         
         // 1. Instancia o Comparator
-        Comparator<Veiculo> compKm = new VeiculoKmComparator(); 
+        Comparator<Veiculo> compKm = new VeiculoKmComparador(); 
         
         // 2. Aplica o MergeSort
         mergeSorter.ordenar(listaParaOrdenar, compKm);
